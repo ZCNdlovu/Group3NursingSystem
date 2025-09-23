@@ -45,6 +45,22 @@ public class Document {
 
     protected Document() {}
 
+    @Override
+    public String toString() {
+        return "Document{" +
+                "documentId='" + documentId + '\'' +
+                ", student=" + student +
+                ", staff=" + staff +
+                ", placement=" + placement +
+                ", filePath='" + filePath + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", sizeBytes=" + sizeBytes +
+                ", uploadedAt=" + uploadedAt +
+                ", status=" + status +
+                ", approvedByStaff=" + approvedByStaff +
+                '}';
+    }
+
     private Document(Builder builder) {
         this.documentId = builder.documentId;
         this.student = builder.student;
@@ -119,7 +135,7 @@ public class Document {
         public Builder setSizeBytes(Long sizeBytes) { this.sizeBytes = sizeBytes; return this; }
         public Builder setUploadedAt(LocalDate uploadedAt) { this.uploadedAt = uploadedAt; return this; }
         public Builder setStatus(StatusType status) { this.status = status; return this; }
-        public Builder setSpprovedByStaff(Staff approvedByStaff) { this.approvedByStaff = approvedByStaff; return this; }
+        public Builder setApprovedByStaff(Staff approvedByStaff) { this.approvedByStaff = approvedByStaff; return this; }
 
         public Builder copy(Document document) {
             this.documentId = document.getDocumentId();
