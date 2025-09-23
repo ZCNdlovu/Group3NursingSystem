@@ -37,7 +37,7 @@ public class Placement {
 
 
 
-    protected Placement() {}
+    public Placement() {}//made changes
 
     private Placement(Builder builder) {
         this.placementId = builder.placementId;
