@@ -34,8 +34,11 @@ public class AdminServiceImpl implements IAdminService {
 
     @Override
     public Admin update(Admin admin) {
+        if (admin.getAdminId() == null) {
+            throw new IllegalArgumentException("Cannot update admin without an ID");
+        }
         if (repository.existsById(admin.getAdminId())) {
-            return repository.save(admin);
+            return repository.save(admin); // ✅ this is UPDATE
         }
         return null;
     }

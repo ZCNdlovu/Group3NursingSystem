@@ -17,6 +17,9 @@ public abstract class User {
     @Column(name = "phone_VARCHAR(30)")
     private String phone;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type_VARCHAR(50)")
     private RoleType role;
@@ -24,11 +27,12 @@ public abstract class User {
 
     protected User() {}
 
-    protected User(String email, String firstName, String lastName, String phone, RoleType role) {
+    protected User(String email, String firstName, String lastName, String phone, String password, RoleType role) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+        this.password = password;
         this.role = role;
 
     }
@@ -42,6 +46,8 @@ public abstract class User {
     public void setLastName(String lastName) { this.lastName = lastName; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    public String getPassword() {return password;}
+    public void setPassword(String password) {this.password = password;}
     public RoleType getRole() { return role; }
     public void setRole(RoleType role) { this.role = role; }
 
@@ -52,6 +58,7 @@ public abstract class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }

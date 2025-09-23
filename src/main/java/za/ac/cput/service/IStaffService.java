@@ -7,8 +7,14 @@ import java.util.Optional;
 
 public interface IStaffService extends IService<Staff, String> {
     void delete(String staffId);
+
     Optional<Staff> findByEmail(String email);
+
     Optional<Staff> findByStaffNumber(String staffNumber);
+
+    //    void delete(String staffId);
+//    Optional<Staff> findByEmail(String email);
+//    Optional<Staff> findByStaffNumber(String staffNumber);
     List<Staff> findByEmailAndPassword(String email, String password);
 
 }

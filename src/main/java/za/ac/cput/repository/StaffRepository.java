@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, String> {
-    void delete(String staffId);
+
     Optional<Staff> findByEmail(String email);
     Optional<Staff> findByStaffNumber(String staffNumber);
     List<Staff> findByEmailAndPassword(String email, String password);

@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAdminService extends IService<Admin, String> {
-    void delete(String adminId);
+    void delete(String staffId);
     Optional<Admin> findByEmail(String email);
-
-    List<Admin> findByEmailAndPassword(String email, String password);
+ List<Admin> findByEmailAndPassword(String email, String password);
 
 }

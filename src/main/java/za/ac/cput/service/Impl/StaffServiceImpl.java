@@ -33,8 +33,11 @@ public class StaffServiceImpl implements IStaffService {
 
     @Override
     public Staff update(Staff staff) {
+        if (staff.getStaffId()== null) {
+            throw new IllegalArgumentException("Cannot update staff without an ID");
+        }
         if (repository.existsById(staff.getStaffId())) {
-            return repository.save(staff);
+            return repository.save(staff); // ✅ this is UPDATE
         }
         return null;
     }

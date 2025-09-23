@@ -18,7 +18,7 @@ public class Staff extends User {
     protected Staff() { }
 
     private Staff(Builder builder) {
-        super(builder.email, builder.firstName, builder.lastName, builder.phone,
+        super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password ,
                 RoleType.STAFF);
         this.staffId = builder.staffId;
         this.staffNumber = builder.staffNumber;
@@ -43,6 +43,7 @@ public class Staff extends User {
         private String firstName;
         private String lastName;
         private String phone;
+        private String password;
         private String staffNumber;
         private Boolean isClinical;
 
@@ -52,6 +53,7 @@ public class Staff extends User {
         public Builder setFirstName(String firstName) { this.firstName = firstName; return this; }
         public Builder setLastName(String lastName) { this.lastName = lastName; return this; }
         public Builder setPhone(String phone) { this.phone = phone; return this; }
+        public Builder setPassword(String password){this.password = password; return this; }
         public Builder setStaffNumber(String staffNumber) { this.staffNumber = staffNumber; return this; }
         public Builder setClinical(Boolean isClinical) { this.isClinical = isClinical; return this; }
 
@@ -61,6 +63,7 @@ public class Staff extends User {
             this.firstName = staff.getFirstName();
             this.lastName = staff.getLastName();
             this.phone = staff.getPhone();
+            this.password = staff.getPassword();
             this.staffNumber = staff.getStaffNumber();
             this.isClinical = staff.getClinical();
             return this;

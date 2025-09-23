@@ -33,8 +33,11 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Student update(Student student) {
+        if (student.getStudentId()== null) {
+            throw new IllegalArgumentException("Cannot update student without an ID");
+        }
         if (repository.existsById(student.getStudentId())) {
-            return repository.save(student);
+            return repository.save(student); // ✅ this is UPDATE
         }
         return null;
     }
