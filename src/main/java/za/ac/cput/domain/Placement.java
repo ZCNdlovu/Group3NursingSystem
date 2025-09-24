@@ -36,8 +36,8 @@ public class Placement {
     private StatusType status;
 
 
-
     public Placement() {}//made changes
+
 
     private Placement(Builder builder) {
         this.placementId = builder.placementId;

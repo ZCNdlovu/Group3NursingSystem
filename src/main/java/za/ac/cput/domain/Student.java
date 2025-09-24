@@ -18,7 +18,9 @@ public class Student extends User {
     @Column(name = "program_VARCHAR(150)")
     private String program;
 
+
     public Student() {  }//made changes
+
 
     private Student(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password,

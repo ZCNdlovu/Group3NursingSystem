@@ -15,7 +15,9 @@ public class Staff extends User {
     @Column(name = "is_clinical_TINYINT(1)")
     private Boolean isClinical;
 
+
     public Staff() { }//made changes
+
 
     private Staff(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password ,
