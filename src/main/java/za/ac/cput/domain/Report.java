@@ -31,6 +31,18 @@ public class Report {
 
     protected Report() {}
 
+    @Override
+    public String toString() {
+        return "Report{" +
+                "reportId=" + reportId +
+                ", generatedByUser=" + generatedByUser +
+                ", reportName='" + reportName + '\'' +
+                ", generatedAt=" + generatedAt +
+                ", parametersJson='" + parametersJson + '\'' +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
+
     private Report(Builder builder) {
         this.reportId = builder.reportId;
         this.generatedByUser = builder.generatedByUser;

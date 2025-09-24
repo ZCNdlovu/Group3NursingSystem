@@ -61,13 +61,20 @@ public class AuthController {
         }
     }
 
-    private ResponseEntity<Map<String, String>> buildResponse(String id, String firstName, String lastName, String email, String role) {
-        Map<String, String> response = new HashMap<>();
-        response.put("id", id);
-        response.put("firstName", firstName);
-        response.put("lastName", lastName);
-        response.put("email", email);
+    private ResponseEntity<?> buildResponse(String id, String firstName, String lastName, String email, String role) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Login successful");
         response.put("role", role);
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", id);
+        userData.put("firstName", firstName);
+        userData.put("lastName", lastName);
+        userData.put("email", email);
+        userData.put("role", role);
+
+        response.put("data", userData);
         return ResponseEntity.ok(response);
     }
 }
