@@ -14,6 +14,7 @@ import java.util.Optional;
 @Service
 public class IncidentServiceImpl implements IIncidentService {
 
+
     private final IncidentRepository repository;
 
     @Autowired
@@ -72,4 +73,4 @@ public class IncidentServiceImpl implements IIncidentService {
     public List<Incident> findByFacility(Facility facility) {
         return repository.findByFacility(facility);
     }
-}
+}//

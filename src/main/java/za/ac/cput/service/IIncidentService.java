@@ -13,6 +13,6 @@ public interface IIncidentService extends IService<Incident, String> {
 
     List<Incident> findByReportedByStaff(Staff staff);
 
-    // 🔹 Find all incidents that occurred in a specific facility
+
     List<Incident> findByFacility(Facility facility);
 }

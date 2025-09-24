@@ -18,6 +18,7 @@ public class IncidentFactory {
             String description,
             StatusType status) {
 
+
         // Validate mandatory fields
         if (student == null) {
             throw new IllegalArgumentException("Student is required");
