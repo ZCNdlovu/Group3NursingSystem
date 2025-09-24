@@ -80,11 +80,4 @@ class FacilityServiceImplTest {
         System.out.println(allFacility);
     }
 
-    @Test
-    void findByName() {
-    }
-
-    @Test
-    void findByNameAndAddress() {
-    }
 }

@@ -8,7 +8,7 @@ import za.ac.cput.repository.FacilityRepository;
 import za.ac.cput.service.IFacilityService;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class FacilityServiceImpl implements IFacilityService {
@@ -31,11 +31,6 @@ public class FacilityServiceImpl implements IFacilityService {
     @Override
     public List<Facility> getAll() {return facilityRepository.findAll(); }
 
-    @Override
-    public Optional<Facility> findByName(String name) {return facilityRepository.findByName(name);}
 
-    @Override
-    public List<Facility> findByNameAndAddress(String name, String address) {
-    return facilityRepository.findByNameAndAddress(name, address);}
     }
 

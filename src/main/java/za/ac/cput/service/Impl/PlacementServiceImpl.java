@@ -12,8 +12,8 @@ import java.util.List;
 public class PlacementServiceImpl implements IPlacementService {
     private final PlacementRepository placementRepository;
 
-    @Autowired
-    public PlacementServiceImpl(PlacementRepository placementRepository) {
+@Autowired
+public PlacementServiceImpl(PlacementRepository placementRepository) {
         this.placementRepository = placementRepository;
     }
 
