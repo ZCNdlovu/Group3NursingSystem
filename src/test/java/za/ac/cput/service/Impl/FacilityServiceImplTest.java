@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FacilityServiceImplTest {
 
-    private FacilityServiceImpl facilityService;
+    private final FacilityServiceImpl facilityService;
     private static Facility facility1;
     private static Facility facility2;
     private static Facility facility3;

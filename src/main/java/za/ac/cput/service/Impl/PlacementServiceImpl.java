@@ -13,7 +13,7 @@ public class PlacementServiceImpl implements IPlacementService {
     private final PlacementRepository placementRepository;
 
 @Autowired
-public PlacementServiceImpl(PlacementRepository placementRepository) {
+    public PlacementServiceImpl(PlacementRepository placementRepository) {
         this.placementRepository = placementRepository;
     }
 
@@ -22,10 +22,10 @@ public PlacementServiceImpl(PlacementRepository placementRepository) {
 
     @Override
     public Placement read(Integer placementId) {return placementRepository.findById(placementId).orElse(null);}
-
+    
     @Override
     public Placement update(Placement placement) {return placementRepository.save(placement);}
-
+    
     @Override
     public List<Placement> getAll() {return placementRepository.findAll();}
     }
