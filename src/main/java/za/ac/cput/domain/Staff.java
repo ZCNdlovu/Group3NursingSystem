@@ -16,15 +16,19 @@ public class Staff extends User {
     private Boolean isClinical;
 
 
-    public Staff() { }//made changes
+    public Staff(String staff123) { }//made changes
 
 
-    private Staff(Builder builder) {
+    public Staff(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password ,
                 RoleType.STAFF);
         this.staffId = builder.staffId;
         this.staffNumber = builder.staffNumber;
         this.isClinical = builder.isClinical;
+    }
+
+    public Staff() {
+
     }
 
     public String getStaffId() {
