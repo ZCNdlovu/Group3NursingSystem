@@ -19,16 +19,20 @@ public class Student extends User {
     private String program;
 
 
-    public Student() {  }//made changes
+    public Student(String student123) {  }//made changes
 
 
-    private Student(Builder builder) {
+    public Student(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password,
                 RoleType.STUDENT);
         this.studentId = builder.studentId;
         this.studentNumber = builder.studentNumber;
         this.yearLevel = builder.yearLevel;
         this.program = builder.program;
+    }
+
+    public Student() {
+
     }
 
     public String getStudentId() {

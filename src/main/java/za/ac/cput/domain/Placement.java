@@ -36,10 +36,10 @@ public class Placement {
     private StatusType status;
 
 
-    public Placement() {}//made changes
+    public Placement(int i) {}//made changes
 
 
-    private Placement(Builder builder) {
+    public Placement(Builder builder) {
         this.placementId = builder.placementId;
         this.student = builder.student;
         this.facility = builder.facility;
@@ -47,6 +47,10 @@ public class Placement {
         this.endDate = builder.endDate;
         this.allocatedByStaff = builder.allocatedByStaff;
         this.status = builder.status;
+
+    }
+
+    public Placement() {
 
     }
 
