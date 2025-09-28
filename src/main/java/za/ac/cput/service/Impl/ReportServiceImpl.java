@@ -19,14 +19,15 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public Report create(Report report) {
-        if (report.getGeneratedAt() == null) {
-            report = new Report.Builder()
-                    .copy(report)
-                    .setGeneratedAt(java.time.LocalDate.now())
-                    .build();
-        }
+        report = new Report.Builder()
+                .copy(report)
+                .setReportId(null)
+                .setGeneratedAt(report.getGeneratedAt() != null ? report.getGeneratedAt() : java.time.LocalDate.now())
+                .build();
+
         return reportRepository.save(report);
     }
+
 
     @Override
     public Report read(Integer reportId) {
