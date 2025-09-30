@@ -15,9 +15,10 @@ public interface IStaffAllocationService extends IService<StaffAllocation, Integ
     List<StaffAllocation> findByStatus(StatusType status);
 
     @Override
-    StaffAllocation read(Integer id);// ✅ matches IService
-    // Add delete here
+    StaffAllocation read(Integer id);
+
     void delete(Integer id);
 }
+
 
 
