@@ -1,4 +1,5 @@
 package za.ac.cput.service.Impl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Facility;
@@ -9,11 +10,9 @@ import za.ac.cput.repository.IncidentRepository;
 import za.ac.cput.service.IIncidentService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class IncidentServiceImpl implements IIncidentService {
-
 
     private final IncidentRepository repository;
 
@@ -28,13 +27,8 @@ public class IncidentServiceImpl implements IIncidentService {
     }
 
     @Override
-    public Incident read(String incidentId) {
-        try {
-            Integer id = Integer.parseInt(incidentId);
-            return repository.findById(id).orElse(null);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+    public Incident read(Integer incidentId) {
+        return repository.findById(incidentId).orElse(null);
     }
 
     @Override
@@ -53,15 +47,9 @@ public class IncidentServiceImpl implements IIncidentService {
         return repository.findAll();
     }
 
-
-
     @Override
-    public Optional<Incident> findByStudent(Student student) {
-        List<Incident> incidents = repository.findByStudent(student);
-        if (incidents != null && !incidents.isEmpty()) {
-            return Optional.of(incidents.get(0));
-        }
-        return Optional.empty();
+    public List<Incident> findByStudent(Student student) {
+        return repository.findByStudent(student);
     }
 
     @Override
@@ -73,4 +61,9 @@ public class IncidentServiceImpl implements IIncidentService {
     public List<Incident> findByFacility(Facility facility) {
         return repository.findByFacility(facility);
     }
-}//
+
+    @Override
+    public void delete(Integer id) {
+        repository.deleteById(id);
+    }
+}

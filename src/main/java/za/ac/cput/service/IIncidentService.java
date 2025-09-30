@@ -8,11 +8,14 @@ import za.ac.cput.domain.Student;
 import java.util.List;
 import java.util.Optional;
 
-public interface IIncidentService extends IService<Incident, String> {
-    Optional<Incident> findByStudent(Student student);
-
+public interface IIncidentService extends IService<Incident, Integer> {
+    List<Incident> findByStudent(Student student);
     List<Incident> findByReportedByStaff(Staff staff);
-
-
     List<Incident> findByFacility(Facility facility);
+
+    @Override
+    Incident read(Integer id);
+
+    void delete(Integer id);
 }
+
