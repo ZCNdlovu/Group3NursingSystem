@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Student;
 import za.ac.cput.domain.RoleType;
 import za.ac.cput.repository.StudentRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import za.ac.cput.service.IStudentService;
+import za.ac.cput.util.IdGenerator;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +16,25 @@ import java.util.Optional;
 public class StudentServiceImpl implements IStudentService {
 
     private final StudentRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final IdGenerator idGenerator;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository repository) {
+    public StudentServiceImpl(StudentRepository repository, PasswordEncoder passwordEncoder,  IdGenerator idGenerator) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.idGenerator = idGenerator;
     }
 
     @Override
     public Student create(Student student) {
+        if (student.getStudentId() == null || student.getStudentId().isEmpty()) {
+            // 2. Generate the custom ID
+            String newId = idGenerator.generateNextId("ST");
+            student = new Student.Builder().copy(student).setStudentId(newId).build();
+        }
         student.setRole(RoleType.STUDENT);
+        student.setPassword(passwordEncoder.encode(student.getPassword())); // Encode password
         return repository.save(student);
     }
 
@@ -56,14 +68,10 @@ public class StudentServiceImpl implements IStudentService {
     public Optional<Student> findByEmail(String email) {
         return repository.findByEmail(email);
     }
-
     @Override
     public Optional<Student> findByStudentNumber(String studentNumber) {
         return repository.findByStudentNumber(studentNumber);
     }
 
-    @Override
-    public List<Student> findByEmailAndPassword(String email, String password) {
-        return repository.findByEmailAndPassword(email, password);
-    }
+
 }

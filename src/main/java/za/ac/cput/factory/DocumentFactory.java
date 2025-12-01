@@ -3,6 +3,7 @@ package za.ac.cput.factory;
 import za.ac.cput.domain.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DocumentFactory {
 
@@ -24,7 +25,7 @@ public class DocumentFactory {
                 .setFilePath(filePath)
                 .setFileName(fileName)
                 .setSizeBytes(sizeBytes)
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(status != null ? status: StatusType.PENDING)
                 .setApprovedByStaff(approvedByStaff)
                 .build();
@@ -39,7 +40,7 @@ public class DocumentFactory {
                 .setStudent(student)
                 .setFilePath(filePath)
                 .setFileName(fileName)
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(StatusType.APPROVED)
                 .build();
     }

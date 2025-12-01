@@ -28,5 +28,26 @@ public class PlacementServiceImpl implements IPlacementService {
     
     @Override
     public List<Placement> getAll() {return placementRepository.findAll();}
+
+    @Override
+    // 💡 FIXED: Delete method now returns a boolean and uses the ID correctly
+    public boolean delete(Integer id) {
+        // 1. Check if the entity exists
+        if (placementRepository.existsById(id)) {
+            try {
+                // 2. Perform the deletion using deleteById(ID)
+                placementRepository.deleteById(id);
+
+                // 3. Verify the deletion (check if it no longer exists)
+                return !placementRepository.existsById(id);
+            } catch (Exception e) {
+                // Handle potential database/deletion errors
+                System.err.println("Error deleting Placement with ID " + id + ": " + e.getMessage());
+                return false;
+            }
+        }
+        // Return false if the entity with the given ID was not found
+        return false;
     }
+}
 

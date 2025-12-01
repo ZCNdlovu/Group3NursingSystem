@@ -11,7 +11,7 @@ import org.springframework.http.*;
 import za.ac.cput.domain.Document;
 import za.ac.cput.domain.StatusType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +35,7 @@ public class DocumentControllerTest {
                 .setDocumentId(DOC_ID)
                 .setFileName("test.pdf")
                 .setFilePath("Documents/test.pdf")
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(StatusType.PENDING)
                 .build();
 
@@ -63,7 +63,7 @@ public class DocumentControllerTest {
                 .setDocumentId(DOC_ID)
                 .setFileName("test-updated.pdf")
                 .setFilePath("Documents/test-updated.pdf")
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(StatusType.APPROVED)
                 .build();
 

@@ -1,49 +1,56 @@
 package za.ac.cput.domain;
 
+import com.itextpdf.text.Paragraph;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "document")
 public class Document {
     @Id
-    @Column(name = "document_id_CHAR(36)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "document_id")
     private String documentId;
 
     @ManyToOne
-    @JoinColumn(name = "student_id_CHAR(36)")
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "staff_id_CHAR(36)")
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
     @ManyToOne
-    @JoinColumn(name = "placement_id_INT")
+    @JoinColumn(name = "placement_id")
     private Placement placement;
 
-    @Column(name = "file_path_TEXT")
+    @Column(name = "file_path",nullable = false)
     private String filePath;
 
-    @Column(name = "file_name_VARCHAR(50)")
+    @Column(name = "file_name",nullable = false)
     private String fileName;
 
-    @Column(name = "size_bytes_BIGINT")
+    @Column(name = "size_bytes",nullable = false)
     private Long sizeBytes;
 
-    @Column(name = "uploaded_at_TIMESTAMP")
-    private LocalDate uploadedAt;
+    @Column(name = "uploaded_at",nullable = false)
+    private LocalDateTime uploadedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
+    @Column(name = "status")
     private StatusType status;
 
+    @ManyToOne // Many Documents belong to One Report
+    @JoinColumn(name = "report_id", nullable = false) // Defines the foreign key column name
+    private Report report;
+
     @ManyToOne
-    @JoinColumn(name = "approved_by_staff_CHAR(36)")
+    @JoinColumn(name = "approved_by")
     private Staff approvedByStaff;
 
-    protected Document() {}
+    public Document() {}
 
     @Override
     public String toString() {
@@ -57,6 +64,7 @@ public class Document {
                 ", sizeBytes=" + sizeBytes +
                 ", uploadedAt=" + uploadedAt +
                 ", status=" + status +
+                ", report=" + report +
                 ", approvedByStaff=" + approvedByStaff +
                 '}';
     }
@@ -72,6 +80,7 @@ public class Document {
         this.uploadedAt = builder.uploadedAt;
         this.status = builder.status;
         this.approvedByStaff = builder.approvedByStaff;
+        this.report = builder.report;
     }
 
     public String getDocumentId() {
@@ -102,7 +111,7 @@ public class Document {
         return sizeBytes;
     }
 
-    public LocalDate getUploadedAt() {
+    public LocalDateTime getUploadedAt() {
         return uploadedAt;
     }
 
@@ -114,6 +123,11 @@ public class Document {
         return approvedByStaff;
     }
 
+     public Report getReport(){return report;}
+
+
+
+
     public static class Builder {
         private String documentId;
         private Student student;
@@ -122,9 +136,10 @@ public class Document {
         private String filePath;
         private String fileName;
         private Long sizeBytes;
-        private LocalDate uploadedAt;
+        private LocalDateTime uploadedAt;
         private StatusType status;
         private Staff approvedByStaff;
+        private Report report;
 
         public Builder setDocumentId(String documentId) { this.documentId = documentId; return this; }
         public Builder setStudent(Student student) { this.student = student; return this; }
@@ -133,9 +148,10 @@ public class Document {
         public Builder setFilePath(String filePath) { this.filePath = filePath; return this; }
         public Builder setFileName(String fileName) { this.fileName = fileName; return this; }
         public Builder setSizeBytes(Long sizeBytes) { this.sizeBytes = sizeBytes; return this; }
-        public Builder setUploadedAt(LocalDate uploadedAt) { this.uploadedAt = uploadedAt; return this; }
+        public Builder setUploadedAt(LocalDateTime uploadedAt) { this.uploadedAt = uploadedAt; return this; }
         public Builder setStatus(StatusType status) { this.status = status; return this; }
         public Builder setApprovedByStaff(Staff approvedByStaff) { this.approvedByStaff = approvedByStaff; return this; }
+        public Builder setReport(Report report){this.report = report; return this;}
 
         public Builder copy(Document document) {
             this.documentId = document.getDocumentId();
@@ -148,6 +164,7 @@ public class Document {
             this.uploadedAt = document.getUploadedAt();
             this.status = document.getStatus();
             this.approvedByStaff = document.getApprovedByStaff();
+            this.report = document.getReport();
             return this;
         }
 

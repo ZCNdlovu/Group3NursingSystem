@@ -18,6 +18,8 @@ public interface IStaffAllocationService extends IService<StaffAllocation, Integ
     StaffAllocation read(Integer id);
 
     void delete(Integer id);
+
+    List<StaffAllocation> findByYearLevel(Integer level);
 }
 
 

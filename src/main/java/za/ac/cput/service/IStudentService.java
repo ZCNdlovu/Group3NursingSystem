@@ -12,7 +12,8 @@ public interface IStudentService extends IService<Student, String> {
     Optional<Student> findByStudentNumber(String studentNumber);
 
     //    void delete(String studentId);
-//    Optional<Student> findByEmail(String email);
+//    Student findByEmail(String email);
 //    Optional<Student> findByStudentNumber(String studentNumber);
-    List<Student> findByEmailAndPassword(String email, String password);
+
 }
+

@@ -28,5 +28,28 @@ public class FacilityServiceImpl implements IFacilityService {
 
     @Override
     public List<Facility> getAll() {return facilityRepository.findAll();}
+
+    @Override
+    // 💡 FIXED: Delete method now returns a boolean and uses the ID correctly
+    public boolean delete(Integer id) {
+        // 1. Check if the entity exists
+        if (facilityRepository.existsById(id)) {
+            try {
+                // 2. Perform the deletion using deleteById(ID)
+                facilityRepository.deleteById(id);
+
+                // 3. Verify the deletion (check if it no longer exists)
+                return !facilityRepository.existsById(id);
+            } catch (Exception e) {
+                // Handle potential database/deletion errors
+                System.err.println("Error deleting Placement with ID " + id + ": " + e.getMessage());
+                return false;
+            }
+        }
+        // Return false if the entity with the given ID was not found
+        return false;
     }
+
+
+}
 

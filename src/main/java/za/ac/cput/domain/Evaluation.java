@@ -7,25 +7,25 @@ import jakarta.persistence.*;
 public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "evaluation_id_INT")
+    @Column(name = "evaluation_id")
     private Integer evaluationId;
 
     @ManyToOne
-    @JoinColumn(name = "staff_id_CHAR(36)")
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
     @ManyToOne
-    @JoinColumn(name = "student_id_CHAR(36)")
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "placement_id_INT")
+    @JoinColumn(name = "placement_id")
     private Placement placement;
 
-    @Column(name = "rating_SMALLINT")
+    @Column(name = "rating",nullable = false)
     private Short rating;
 
-    @Column(name = "feedback_TEXT")
+    @Column(name = "feedback",nullable = false)
     private String feedback;
 
 

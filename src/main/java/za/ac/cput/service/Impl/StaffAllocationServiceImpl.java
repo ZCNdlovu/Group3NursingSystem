@@ -49,6 +49,11 @@ public class StaffAllocationServiceImpl implements IStaffAllocationService {
     }
 
     @Override
+    public List<StaffAllocation> findByYearLevel(Integer level) {
+        return repository.findByYearLevel(level);
+    }
+
+    @Override
     public List<StaffAllocation> getAll() {
         return repository.findAll();
     }

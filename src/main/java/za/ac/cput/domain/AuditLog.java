@@ -7,23 +7,23 @@ import jakarta.persistence.*;
 public class AuditLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id_INT")
+    @Column(name = "log_id")
     private Integer logId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
+    @Column(name = "status")
     private RoleType user; // Enum: STUDENT, STAFF, ADMIN
 
-    @Column(name = "action_TEXT")
+    @Column(name = "action",nullable = false)
     private String action;
 
-    @Column(name = "entity_id_CHAR(36)")
+    @Column(name = "entity_id")
     private String entityId;
 
-    @Column(name = "entity_type_VARCHAR(100)")
+    @Column(name = "entity_type", nullable = false)
     private String entityType;
 
-    @Column(name = "details_JSON")
+    @Column(name = "details", nullable = false)
     private String detailsJson;
 
     protected AuditLog() {}

@@ -3,6 +3,7 @@ package za.ac.cput.service.Impl;
 
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Evaluation;
+import za.ac.cput.domain.Incident;
 import za.ac.cput.domain.Student;
 import za.ac.cput.repository.EvaluationRepository;
 import za.ac.cput.service.IEvaluationService;
@@ -24,6 +25,16 @@ public class EvaluationServiceImpl implements IEvaluationService {
         return repository.save(evaluation);
     }
 
+    @Override
+    public Evaluation update(Evaluation evaluation) {
+        if (evaluation.getEvaluationId() == null) {
+            throw new IllegalArgumentException("Cannot update incident without an ID");
+        }
+        if (repository.existsById(evaluation.getEvaluationId())) {
+            return repository.save(evaluation);
+        }
+        return null;
+    }
     @Override
     public List<Evaluation> findAll() {
         return repository.findAll();

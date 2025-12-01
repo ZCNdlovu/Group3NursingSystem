@@ -10,29 +10,29 @@ import java.time.LocalDate;
 public class Placement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "placement_id_INT")
+    @Column(name = "placement_id")
     private Integer placementId;
 
     @ManyToOne
-    @JoinColumn(name = "student_id_CHAR(36)")
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "facility_id_INT")
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
-    @Column(name = "start_date_DATE")
+    @Column(name = "start_date",nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date_DATE")
+    @Column(name = "end_date",nullable = false)
     private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "allocated_by_staff_CHAR(36)")
+    @JoinColumn(name = "allocated_by_staff")
     private Staff allocatedByStaff;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
+    @Column(name = "status")
     private StatusType status;
 
 

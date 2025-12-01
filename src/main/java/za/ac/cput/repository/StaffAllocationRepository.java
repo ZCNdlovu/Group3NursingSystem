@@ -20,5 +20,7 @@ public interface StaffAllocationRepository extends JpaRepository<StaffAllocation
 
     // Find all allocations with a specific status
     List<StaffAllocation> findByStatus(StatusType status);
+
+    List<StaffAllocation> findByYearLevel(Integer level);
 }
 

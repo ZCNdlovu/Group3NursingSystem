@@ -12,4 +12,6 @@ public interface IEvaluationService {
     Optional<Evaluation> findById(Integer id);
     void deleteById(Integer id);
     List<Evaluation> findByStudent(Student student); // New method
+
+    Evaluation update(Evaluation evaluationToUpdate);
 }

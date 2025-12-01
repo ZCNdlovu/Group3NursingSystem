@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/auditlogs")
+@CrossOrigin(origins = "*")
 public class AuditLogController {
 
     private final IAuditLogService service;

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IFacilityService extends IService<Facility, Integer>{
     List<Facility> getAll();
+
+    boolean delete(Integer id);
 }

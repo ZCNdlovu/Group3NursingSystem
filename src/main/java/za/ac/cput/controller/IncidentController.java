@@ -2,6 +2,7 @@ package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Facility;
 import za.ac.cput.domain.Incident;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/incidents")
+@CrossOrigin(origins = "*")
 public class IncidentController {
 
     private final IIncidentService incidentService;
@@ -33,7 +35,18 @@ public class IncidentController {
         Incident incident = incidentService.read(id);
         return incident != null ? ResponseEntity.ok(incident) : ResponseEntity.notFound().build();
     }
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    public ResponseEntity<Incident> update(@PathVariable Integer id, @RequestBody Incident incident) {
+        // Build the incident object, ensuring the ID from the path is set
+        Incident incidentToUpdate = new Incident.Builder()
+                .copy(incident)
+                .setIncidentId(id) // Assuming Incident has a Builder
+                .build();
 
+        Incident updated = incidentService.update(incidentToUpdate);
+        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+    }
     @GetMapping
     public List<Incident> getAll() {
         return incidentService.getAll();

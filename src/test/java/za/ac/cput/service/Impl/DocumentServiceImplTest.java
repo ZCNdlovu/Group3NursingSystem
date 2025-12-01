@@ -9,7 +9,7 @@ import za.ac.cput.domain.Document;
 import za.ac.cput.domain.StatusType;
 import za.ac.cput.repository.DocumentRepository;
 import za.ac.cput.service.IDocumentService;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +31,7 @@ public class DocumentServiceImplTest {
                 .setFilePath("Documents/test.pdf")
                 .setFileName("test.pdf")
                 .setSizeBytes(25L)
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(StatusType.PENDING)
                 .build();
 
@@ -72,7 +72,7 @@ public class DocumentServiceImplTest {
                 .setFilePath("Documents/test.pdf")
                 .setFileName("test2.pdf")
                 .setSizeBytes(25L)
-                .setUploadedAt(LocalDate.now())
+                .setUploadedAt(LocalDateTime.now())
                 .setStatus(StatusType.PENDING)
                 .build();
 
