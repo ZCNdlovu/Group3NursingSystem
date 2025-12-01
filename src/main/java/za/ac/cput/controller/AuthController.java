@@ -1,80 +1,62 @@
 package za.ac.cput.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.*;
 import za.ac.cput.domain.dto.LoginRequest;
-import za.ac.cput.service.Impl.*;
+import za.ac.cput.security.JwtTokenProvider;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
-    private final StudentServiceImpl studentService;
-    private final StaffServiceImpl staffService;
-    private final AdminServiceImpl adminService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(StudentServiceImpl studentService, StaffServiceImpl staffService, AdminServiceImpl adminService) {
-        this.studentService = studentService;
-        this.staffService = staffService;
-        this.adminService = adminService;
-    }
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        String email = loginRequest.getEmail();
-        String password = loginRequest.getPassword();
-
-        if (email == null || password == null || email.trim().isEmpty() || password.trim().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email and password are required");
-        }
-
         try {
-            List<Student> students = studentService.findByEmailAndPassword(email, password);
-            if (!students.isEmpty()) {
-                Student user = students.get(0);
-                return buildResponse(user.getStudentId(), user.getFirstName(), user.getLastName(), user.getEmail(), RoleType.STUDENT.toString());
-            }
+            System.out.println("Login attempt for: " + loginRequest.getEmail());
 
-            List<Staff> staffMembers = staffService.findByEmailAndPassword(email, password);
-            if (!staffMembers.isEmpty()) {
-                Staff user = staffMembers.get(0);
-                return buildResponse(user.getStaffId(), user.getFirstName(), user.getLastName(), user.getEmail(), RoleType.STAFF.toString());
-            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-            List<Admin> admins = adminService.findByEmailAndPassword(email, password);
-            if (!admins.isEmpty()) {
-                Admin user = admins.get(0);
-                return buildResponse(user.getAdminId(), user.getFirstName(), user.getLastName(), user.getEmail(), RoleType.ADMIN.toString());
-            }
+            String jwt = jwtTokenProvider.generateToken(authentication);
+            String role = authentication.getAuthorities().iterator().next().getAuthority();
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("token", jwt);
+            response.put("role", role);
+            response.put("message", "Login successful");
+
+            System.out.println("Login successful for: " + loginRequest.getEmail());
+            return ResponseEntity.ok(response);
+
+        } catch (AuthenticationException e) {
+            System.out.println("Login failed for: " + loginRequest.getEmail() + " - " + e.getMessage());
+
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "Login failed. Please check your credentials.");
+
+            return ResponseEntity.status(401).body(errorResponse);
         }
-    }
-
-    private ResponseEntity<?> buildResponse(String id, String firstName, String lastName, String email, String role) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("message", "Login successful");
-        response.put("role", role);
-
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("id", id);
-        userData.put("firstName", firstName);
-        userData.put("lastName", lastName);
-        userData.put("email", email);
-        userData.put("role", role);
-
-        response.put("data", userData);
-        return ResponseEntity.ok(response);
     }
 }
+

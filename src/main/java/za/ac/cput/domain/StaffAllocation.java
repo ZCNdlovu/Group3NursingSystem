@@ -10,28 +10,28 @@ import java.time.LocalDate;
 public class StaffAllocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "allocation_id_INT")
+    @Column(name = "allocation_id")
     private Integer allocationId;
 
     @ManyToOne
-    @JoinColumn(name = "staff_id_CHAR(36)")
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
     @ManyToOne
-    @JoinColumn(name = "facility_id_INT")
+    @JoinColumn(name = "facility_id",nullable = false)
     private Facility facility;
 
-    @Column(name = "year_level_SMALLINT")
+    @Column(name = "year_level",nullable = false)
     private Short yearLevel;
 
-    @Column(name = "start_date_DATE")
+    @Column(name = "start_date",nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date_DATE")
+    @Column(name = "end_date",nullable = false)
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
+    @Column(name = "status")
     private StatusType status;
 
     protected StaffAllocation() {}

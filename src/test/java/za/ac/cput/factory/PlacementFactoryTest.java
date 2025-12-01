@@ -1,8 +1,7 @@
-package factoryTest;
+package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.*;
-import za.ac.cput.factory.PlacementFactory;
 
 import java.time.LocalDate;
 

@@ -1,8 +1,7 @@
-package factoryTest;
+package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.*;
-import za.ac.cput.factory.DocumentFactory;
 
 import java.time.LocalDate;
 
@@ -13,10 +12,10 @@ public class DocumentFactoryTest {
 
     @Test
     void createDocument() {
-        Student student = new Student();
-        Staff staff = new Staff();
-        Placement placement = new Placement();
-        Staff approver = new Staff();
+        Student student = new Student("student123");
+        Staff staff = new Staff("staff123");
+        Placement placement = new Placement(1);
+        Staff approver = new Staff("staff123");
 
         Document doc1 = DocumentFactory.createDocument(
                 "0102",
@@ -36,7 +35,7 @@ public class DocumentFactoryTest {
 
     @Test
     void createBasicDocument() {
-        Document doc2 = DocumentFactory.createBasicDocument(new Student(),
+        Document doc2 = DocumentFactory.createBasicDocument(new Student("student123"),
                 "/Document/docs/file2.pdf",
                 "file2.pdf");
 

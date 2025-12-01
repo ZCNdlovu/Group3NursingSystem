@@ -8,28 +8,28 @@ import jakarta.persistence.*;
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "facility_id_INT")
+    @Column(name = "facility_id")
     private Integer facilityId;
 
-    @Column(name = "name_VARCHAR(255)")
+    @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(name = "type_VARCHAR(50)")
+    @Column(name = "type",nullable = false)
     private String type;
 
-    @Column(name = "address_TEXT")
+    @Column(name = "address",nullable = false)
     private String address;
 
-    @Column(name = "contact_person_VARCHAR(150)")
+    @Column(name = "contact_person",nullable = false)
     private String contactPerson;
 
-    @Column(name = "contact_phone_VARCHAR(30)")
+    @Column(name = "contact_phone",nullable = false)
     private String contactPhone;
 
-    @Column(name = "latitude_DECIMAL(9,6)")
+    @Column(name = "latitude",nullable = false)
     private Double latitude;
 
-    @Column(name = "longitude_DECIMAL(9,6)")
+    @Column(name = "longitude",nullable = false)
     private Double longitude;
 
 

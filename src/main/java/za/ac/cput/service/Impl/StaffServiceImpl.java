@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.RoleType;
 import za.ac.cput.domain.Staff;
 import za.ac.cput.repository.StaffRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import za.ac.cput.service.IStaffService;
+import za.ac.cput.util.IdGenerator;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +16,25 @@ import java.util.Optional;
 public class StaffServiceImpl implements IStaffService {
 
     private final StaffRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final IdGenerator idGenerator;
 
     @Autowired
-    public StaffServiceImpl(StaffRepository repository) {
+    public StaffServiceImpl(StaffRepository repository, PasswordEncoder passwordEncoder,  IdGenerator idGenerator) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.idGenerator = idGenerator;
     }
 
     @Override
     public Staff create(Staff staff) {
+        if (staff.getStaffId() == null || staff.getStaffId().isEmpty()) {
+            // 2. Generate the custom ID
+            String newId = idGenerator.generateNextId("SF");
+            staff  = new Staff.Builder().copy(staff).setStaffId(newId).build();
+        }
         staff.setRole(RoleType.STAFF);
+        staff.setPassword(passwordEncoder.encode(staff.getPassword())); // Encode password
         return repository.save(staff);
     }
 
@@ -62,8 +74,5 @@ public class StaffServiceImpl implements IStaffService {
         return repository.findByStaffNumber(staffNumber);
     }
 
-    @Override
-    public List<Staff> findByEmailAndPassword(String email, String password) {
-        return repository.findByEmailAndPassword(email, password);
-    }
+
 }

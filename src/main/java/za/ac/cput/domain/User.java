@@ -1,27 +1,29 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.PrePersist;
+import za.ac.cput.util.IdGenerator;
 
 @MappedSuperclass
 public abstract class User {
 
-    @Column(name = "email_VARCHAR(255)", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "first_name_VARCHAR(100)")
+    @Column(name = "first_name",nullable = false)
     private String firstName;
 
-    @Column(name = "last_name_VARCHAR(100)")
+    @Column(name = "last_name",nullable = false)
     private String lastName;
 
-    @Column(name = "phone_VARCHAR(30)")
+    @Column(name = "phone",nullable = false)
     private String phone;
 
-    @Column(nullable = false)
+    @Column(name = "password",nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_type_VARCHAR(50)")
+    @Column(name = "role_type")
     private RoleType role;
 
 

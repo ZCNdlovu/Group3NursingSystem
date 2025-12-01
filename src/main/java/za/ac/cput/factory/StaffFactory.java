@@ -1,12 +1,17 @@
 package za.ac.cput.factory;
 
+import org.springframework.stereotype.Component;
 import za.ac.cput.domain.Staff;
+import za.ac.cput.util.IdGenerator;
 
 import java.util.UUID;
-
+@Component
 public class StaffFactory {
-
-    public static Staff createStaff(String firstName, String lastName, String email,
+    private static IdGenerator idGenerator;
+    public StaffFactory(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
+    public Staff createStaff(String firstName, String lastName, String email,
                                     String staffNumber, Boolean isClinical) {
         // Basic validation
         if (firstName == null || firstName.isEmpty()) {
@@ -26,7 +31,7 @@ public class StaffFactory {
         }
 
         // Auto-generate UUID as staffId
-        String staffId = UUID.randomUUID().toString();
+        String staffId = idGenerator.generateNextId("SF");
 
         return new Staff.Builder()
                 .setStaffId(staffId)

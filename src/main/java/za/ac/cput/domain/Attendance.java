@@ -10,48 +10,48 @@ import java.time.LocalDateTime;
 public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "attendance_id_INT")
+    @Column(name = "attendance_id")
     private Integer attendanceId;
 
     @ManyToOne
-    @JoinColumn(name = "student_id_CHAR(36)")
+    @JoinColumn(name = "student_id")
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "facility_id_INT")
+    @JoinColumn(name = "facility_id")
     private Facility facility;
 
     @ManyToOne
-    @JoinColumn(name = "placement_id_INT")
+    @JoinColumn(name = "placement_id")
     private Placement placement;
 
-    @Column(name = "check_in_TIMESTAMP")
+    @Column(name = "check_in")
     private LocalDateTime checkIn;
 
-    @Column(name = "check_out_TIMESTAMP")
+    @Column(name = "check_out")
     private LocalDateTime checkOut;
 
-    @Column(name = "hours_DECIMAL(5,2)")
+    @Column(name = "hours")
     private Double hours;
 
-    @Column(name = "is_late_TINYINT(1)")
+    @Column(name = "is_late")
     private Boolean isLate;
 
-    @Column(name = "log_DECIMAL(9,6)")
+    @Column(name = "log")
     private Double log;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
+    @Column(name = "status")
     private StatusType status;
 
     @ManyToOne
-    @JoinColumn(name = "verified_by_CHAR(36)")
+    @JoinColumn(name = "verified_by)")
     private Staff verifiedBy;
 
-    @Column(name = "verified_at_TIMESTAMP")
+    @Column(name = "verified_at",nullable = false)
     private LocalDateTime verifiedAt;
 
-    @Column(name = "notes_TEXT")
+    @Column(name = "notes",nullable = false)
     private String notes;
 
     protected Attendance() {}

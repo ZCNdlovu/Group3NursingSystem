@@ -1,9 +1,8 @@
-package factoryTest;
+package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.Report;
 import za.ac.cput.domain.RoleType;
-import za.ac.cput.factory.ReportFactory;
 
 import java.time.LocalDate;
 

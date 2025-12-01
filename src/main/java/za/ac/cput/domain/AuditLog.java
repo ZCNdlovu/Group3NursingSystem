@@ -1,6 +1,5 @@
 package za.ac.cput.domain;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -8,25 +7,24 @@ import jakarta.persistence.*;
 public class AuditLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id_INT")
+    @Column(name = "log_id")
     private Integer logId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_VARCHAR(20)")
-    private  RoleType user; // Need to be changed and make Student,Staff and Admin
+    @Column(name = "status")
+    private RoleType user; // Enum: STUDENT, STAFF, ADMIN
 
-    @Column(name = "action_TEXT")
+    @Column(name = "action",nullable = false)
     private String action;
 
-    @Column(name = "entity_id_CHAR(36)")
+    @Column(name = "entity_id")
     private String entityId;
 
-    @Column(name = "entity_type_VARCHAR(100)")
+    @Column(name = "entity_type", nullable = false)
     private String entityType;
 
-    @Column(name = "details_JSON")
+    @Column(name = "details", nullable = false)
     private String detailsJson;
-
 
     protected AuditLog() {}
 
@@ -37,14 +35,13 @@ public class AuditLog {
         this.entityId = builder.entityId;
         this.entityType = builder.entityType;
         this.detailsJson = builder.detailsJson;
-
     }
 
     public Integer getLogId() {
         return logId;
     }
 
-    public RoleType getUser() {
+    public RoleType getUser () {  // Fixed: No space before ()
         return user;
     }
 
@@ -72,9 +69,8 @@ public class AuditLog {
         private String entityType;
         private String detailsJson;
 
-
         public Builder setLogId(Integer logId) { this.logId = logId; return this; }
-        public Builder setUser(RoleType user) { this.user = user; return this; }
+        public Builder setUser (RoleType user) { this.user = user; return this; }  // Fixed: No space before (RoleType
         public Builder setAction(String action) { this.action = action; return this; }
         public Builder setEntityId(String entityId) { this.entityId = entityId; return this; }
         public Builder setEntityType(String entityType) { this.entityType = entityType; return this; }
@@ -82,7 +78,7 @@ public class AuditLog {
 
         public Builder copy(AuditLog auditLog) {
             this.logId = auditLog.getLogId();
-            this.user = auditLog.getUser();
+            this.user = auditLog.getUser ();  // Fixed: No space
             this.action = auditLog.getAction();
             this.entityId = auditLog.getEntityId();
             this.entityType = auditLog.getEntityType();

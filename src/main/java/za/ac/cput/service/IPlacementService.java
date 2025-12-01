@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IPlacementService extends IService<Placement, Integer>{
     List<Placement> getAll();
+
+    boolean delete(Integer id);
 }
