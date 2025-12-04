@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document, String> {
+public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
 
 }

@@ -13,6 +13,9 @@ import za.ac.cput.service.EmailService;
 import za.ac.cput.service.IAdminService;
 import za.ac.cput.service.Impl.AdminServiceImpl;
 import za.ac.cput.service.Impl.EmailServiceImpl;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -110,10 +113,15 @@ public class AdminController {
         return ResponseEntity.noContent().build(); // HTTP 204 No Content
     }
 
-    @GetMapping
+    @GetMapping("/me")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        List<Admin> admins = adminService.getAll();
-        return ResponseEntity.ok(admins);
+    public ResponseEntity<Admin> getCurrentAdmin(@AuthenticationPrincipal UserDetails userDetails) {
+        // userDetails.getUsername() returns the email of the logged-in admin
+        Admin admin = adminService.findByEmail(userDetails.getUsername())
+                .orElse(null);
+        if (admin == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(admin);
     }
 }

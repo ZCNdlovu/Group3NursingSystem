@@ -8,6 +8,7 @@ import za.ac.cput.domain.Document;
 import za.ac.cput.domain.Placement;
 import za.ac.cput.domain.Report;
 import za.ac.cput.domain.Student;
+import za.ac.cput.domain.Staff;
 import za.ac.cput.repository.DocumentRepository;
 import za.ac.cput.repository.ReportRepository;
 import za.ac.cput.service.IDocumentService;
@@ -27,78 +28,51 @@ public class DocumentServiceImpl implements IDocumentService {
     private final ReportRepository reportRepository;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository documentRepository, IFileStorageService fileStorageService, ReportRepository reportRepository) {
+    public DocumentServiceImpl(DocumentRepository documentRepository,
+                               IFileStorageService fileStorageService,
+                               ReportRepository reportRepository) {
         this.documentRepository = documentRepository;
         this.fileStorageService = fileStorageService;
         this.reportRepository = reportRepository;
-
     }
 
     @Override
-    // Example in DocumentService (Conceptual)
     public Document create(Document document) {
-        // 1. Get the reportId from the document object (or DTO)
-        Integer reportId = document.getReport().getReportId();
+        if (document.getReport() == null || document.getReport().getReportId() == null) {
+            throw new IllegalArgumentException("Document must have a valid report");
+        }
 
-        // 2. Fetch the existing Report entity from the database
-
-        Report report = reportRepository.findById(reportId)
+        Report report = reportRepository.findById(document.getReport().getReportId())
                 .orElseThrow(() -> new EntityNotFoundException("Report not found"));
 
-        // 3. Set the managed Report entity on the Document
-        document = new Document.Builder()
+        Document newDocument = new Document.Builder()
+                .copy(document)
                 .setReport(report)
                 .build();
 
-        // 4. Save the Document
-        return documentRepository.save(document);
+        return documentRepository.save(newDocument);
     }
 
     @Override
     public Document read(String documentId) {
-        return documentRepository.findById(documentId)
-                .orElse(null);
-    }
-    @Override
-    public Document processFileUpload(MultipartFile file, Student studentId, Placement placementId, String uploadedBy, String fileType) {
-
-        // 1. Basic Input Validation
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("Cannot process an empty file.");
-        }
-
         try {
-            // 2. Save the file physically and get its URL/Path
-            // The implementation detail of fileStorageService.storeFile is handled separately.
-            // It returns the full path or URL where the file can be accessed later.
-            String fileUrl = fileStorageService.storeFile(file);
-
-            // 3. Create the Document entity
-            // Note: documentId is assumed to be a UUID generated here or in the Document constructor
-            String documentId = UUID.randomUUID().toString();
-
-            Document document = new Document.Builder()
-                    .setDocumentId(documentId)
-                    .setFileName(file.getOriginalFilename())
-                    .setFilePath(fileUrl) // Use the path returned from the storage service
-                    .setStudent(studentId)
-                    .setPlacement(placementId)
-                    .setUploadedAt(LocalDateTime.now())
-                    .build();
-
-            // 4. Save the Document metadata to the database
-            return documentRepository.save(document);
-
-        } catch (IOException e) {
-            // Handle file-related exceptions (e.g., failed to save to disk)
-            System.err.println("File storage error: " + e.getMessage());
-            throw new RuntimeException("Failed to store the file: " + file.getOriginalFilename(), e);
-        } catch (Exception e) {
-            // Catch any other exceptions during entity creation or database save
-            System.err.println("Document creation error: " + e.getMessage());
-            throw new RuntimeException("Failed to process document upload: " + e.getMessage(), e);
+            Integer id = Integer.parseInt(documentId);
+            return documentRepository.findById(id).orElse(null);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid document ID format");
         }
     }
+
+    @Override
+    public Optional<Document> findById(String documentId) {
+        try {
+            Integer id = Integer.parseInt(documentId);
+            return documentRepository.findById(id);
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
     @Override
     public Document update(Document document) {
         if (document.getDocumentId() == null || !documentRepository.existsById(document.getDocumentId())) {
@@ -108,14 +82,17 @@ public class DocumentServiceImpl implements IDocumentService {
     }
 
     @Override
-    public Optional<Document> findById(String documentId) {
-        return documentRepository.findById(documentId);
-    }
-
-
-    @Override
-    public Document processFileUpload(MultipartFile file, String studentId, Integer placementId, String uploadedBy, String fileType) {
-        return null;
+    public void deleteById(String documentId) {
+        try {
+            Integer id = Integer.parseInt(documentId);
+            if (documentRepository.existsById(id)) {
+                documentRepository.deleteById(id);
+            } else {
+                throw new EntityNotFoundException("Document with ID " + documentId + " not found");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid document ID format");
+        }
     }
 
     @Override
@@ -124,10 +101,37 @@ public class DocumentServiceImpl implements IDocumentService {
     }
 
     @Override
-    public void deleteById(String documentId) {
-        if (documentRepository.existsById(documentId)) {
-            documentRepository.deleteById(documentId);
-
+    public Document processFileUpload(MultipartFile file, Student studentId, Placement placementId, String uploadedBy, String fileType) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot process an empty file.");
         }
+
+        try {
+            String fileUrl = fileStorageService.storeFile(file);
+
+            String documentId = UUID.randomUUID().toString(); // Temporary ID for Builder; DB will assign Integer
+
+            Document document = new Document.Builder()
+                    .setDocumentId(null) // DB will generate Integer ID
+                    .setFileName(file.getOriginalFilename())
+                    .setFilePath(fileUrl)
+                    .setStudent(studentId)
+                    .setPlacement(placementId)
+                    .setUploadedAt(LocalDateTime.now())
+                    .build();
+
+            return documentRepository.save(document);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file: " + file.getOriginalFilename(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process document upload: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Document processFileUpload(MultipartFile file, String studentId, Integer placementId, String uploadedBy, String fileType) {
+        // Currently not implemented; kept for interface compatibility
+        return null;
     }
 }
