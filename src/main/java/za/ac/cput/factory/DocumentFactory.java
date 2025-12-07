@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class DocumentFactory {
 
-    public static Document createDocument(String documentId,
+    public static Document createDocument(Integer documentId,
                                           Student student,
                                           Staff staff,
                                           Placement placement,

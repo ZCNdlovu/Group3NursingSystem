@@ -7,12 +7,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "document")
+@Table(name = "documents")
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
-    private String documentId;
+    private Integer documentId;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
@@ -83,8 +83,8 @@ public class Document {
         this.report = builder.report;
     }
 
-    public String getDocumentId() {
-        return documentId;
+
+    public Integer getDocumentId() {return documentId;
     }
 
     public Student getStudent() {
@@ -129,7 +129,7 @@ public class Document {
 
 
     public static class Builder {
-        private String documentId;
+        private Integer documentId;
         private Student student;
         private Staff staff;
         private Placement placement;
@@ -141,7 +141,7 @@ public class Document {
         private Staff approvedByStaff;
         private Report report;
 
-        public Builder setDocumentId(String documentId) { this.documentId = documentId; return this; }
+        public Builder setDocumentId(Integer documentId) { this.documentId = documentId; return this; }
         public Builder setStudent(Student student) { this.student = student; return this; }
         public Builder setStaff(Staff staff) { this.staff = staff; return this; }
         public Builder setPlacement(Placement placement) { this.placement = placement; return this; }
@@ -154,7 +154,6 @@ public class Document {
         public Builder setReport(Report report){this.report = report; return this;}
 
         public Builder copy(Document document) {
-            this.documentId = document.getDocumentId();
             this.student = document.getStudent();
             this.staff = document.getStaff();
             this.placement = document.getPlacement();

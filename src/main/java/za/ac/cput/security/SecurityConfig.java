@@ -4,13 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,8 +30,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
-    // Inject JwtAuthenticationFilter
-    public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider,@Lazy UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider, @Lazy UserDetailsServiceImpl userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
     }
@@ -43,28 +42,24 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Public endpoints
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/admin/register",
                                 "/api/test/**",
                                 "/error"
                         ).permitAll()
-
-                        // Role-based access - using hasRole (automatically adds ROLE_ prefix)
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/staff/**").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers("/api/student/**").hasAnyRole("ADMIN", "STAFF", "STUDENT")
-
-                        // Allow preflight requests
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider()); // <-- Added
 
         return http.build();
     }
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
@@ -74,11 +69,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    public DaoAuthenticationProvider authenticationProvider() { // <-- Added
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000" // Vite default port
-        )); // Use patterns for flexibility
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000",
+                                                      "http://localhost:3030",
+                                                       "http://localhost:3000",
+                                                        "http://localhost:8081",
+                                                        "http://localhost",
+                                                       "http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));

@@ -41,7 +41,7 @@ public class AdminFactory {
     }
 
     // Overloaded method for cases where you might not have all fields initially
-    public Admin createAdmin(String firstName, String lastName, String email) {
+    public static Admin createAdmin(String firstName, String lastName, String email) {
         return createAdmin(firstName, lastName, email, "default-phone", "default-password");
     }
 

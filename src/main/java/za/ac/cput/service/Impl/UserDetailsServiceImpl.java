@@ -51,6 +51,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Admin> admin = adminService.findByEmail(email);
         if (admin.isPresent()) {
             System.out.println("Found admin: " + admin.get().getEmail());
+            System.out.println("Encoded password in DB: " + admin.get().getPassword());
             return buildUserDetails(admin.get().getEmail(), admin.get().getPassword(), "ROLE_ADMIN");
         }
 
