@@ -22,7 +22,9 @@ public class Student extends User {
 
     public Student(String student123) {  }//made changes
 
+    protected Student() {
 
+    }
     public Student(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password,
                 builder.role);
@@ -32,9 +34,7 @@ public class Student extends User {
         this.program = builder.program;
     }
 
-    protected Student() {
 
-    }
 
     public String getStudentId() {
         return studentId;

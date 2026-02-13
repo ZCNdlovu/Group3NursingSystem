@@ -19,7 +19,9 @@ public class Staff extends User {
 
     public Staff(String staff123) { }//made changes
 
+    public Staff() {
 
+    }
     public Staff(Builder builder) {
         super(builder.email, builder.firstName, builder.lastName, builder.phone,builder.password, builder.role);
         this.staffId = builder.staffId;
@@ -27,9 +29,7 @@ public class Staff extends User {
         this.isClinical = builder.isClinical;
     }
 
-    public Staff() {
 
-    }
 
     public String getStaffId() {
         return staffId;

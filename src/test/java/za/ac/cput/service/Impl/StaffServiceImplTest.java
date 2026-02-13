@@ -1,32 +1,34 @@
 package za.ac.cput.service.Impl;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.cput.domain.Admin;
-import za.ac.cput.factory.AdminFactory;
-import za.ac.cput.service.IAdminService;
+import za.ac.cput.domain.Staff;
+import za.ac.cput.domain.Student;
+import za.ac.cput.factory.StaffFactory;
+import za.ac.cput.factory.StudentFactory;
+import za.ac.cput.service.IStaffService;
+import za.ac.cput.service.IStudentService;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-class AdminServiceImplTest {
+class StaffServiceImplTest {
     @Autowired
-    private IAdminService administratorService;
+    private IStaffService staffService;
     @Autowired
-    private AdminFactory adminFactory;
-    private  Admin admin;
+    private StaffFactory staffFactory;
+    private Staff staff;
 
     @BeforeEach
     void setup() {
-        admin = adminFactory.createAdmin("Admin", "Group3", "group3admin@gmail.com", "0717456628", "Admin@3");
+        staff = staffFactory.createStaff("Staff", "Group3", "group3staff@gmail.com", "2025","Staff@3", true );
     }
     @Test
     void create() {
-        administratorService.create(admin);
-        assertNotNull(admin);
-        System.out.println(admin);
+        staffService.create(staff);
+        assertNotNull(staff);
+        System.out.println(staff);
     }
 
     @Test
@@ -50,6 +52,6 @@ class AdminServiceImplTest {
     }
 
     @Test
-    void findByEmailAndPassword() {
+    void findByStaffNumber() {
     }
 }

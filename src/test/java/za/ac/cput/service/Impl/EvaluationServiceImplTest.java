@@ -34,7 +34,7 @@ class EvaluationServiceImplTest {
     @BeforeEach
     void setUp() {
         // Your exact code - works with public constructors, no private access
-        Staff staff = new Staff("staff123");
+        Staff staff = new Staff();
         sampleStudent = new Student("student123");
         Placement placement = new Placement(1);
         sampleEvaluation = new Evaluation.Builder()

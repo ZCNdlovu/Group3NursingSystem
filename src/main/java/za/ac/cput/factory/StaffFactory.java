@@ -12,7 +12,7 @@ public class StaffFactory {
         this.idGenerator = idGenerator;
     }
     public Staff createStaff(String firstName, String lastName, String email,
-                                    String staffNumber, Boolean isClinical) {
+                                    String staffNumber, String password, Boolean isClinical) {
         // Basic validation
         if (firstName == null || firstName.isEmpty()) {
             throw new IllegalArgumentException("First name cannot be null or empty");
@@ -25,6 +25,9 @@ public class StaffFactory {
         }
         if (staffNumber == null || staffNumber.isEmpty()) {
             throw new IllegalArgumentException("Staff number cannot be null or empty");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
         }
         if (isClinical == null) {
             throw new IllegalArgumentException("isClinical cannot be null");
@@ -39,6 +42,7 @@ public class StaffFactory {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setStaffNumber(staffNumber)
+                .setPassword(password)
                 .setClinical(isClinical)
                 .build();
     }
